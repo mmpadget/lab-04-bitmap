@@ -13,6 +13,7 @@ exports.readBit = function(filepath, newFile){
     if (err) throw err;
     // transform(parameters) do we do this and move write to the end of the transforms???
     write(newFile, data);
+    // transform(newFile, grayscale)
   });
 };
 
