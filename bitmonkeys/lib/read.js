@@ -1,3 +1,21 @@
+'use strict';
+
+const fs = require('fs');
+const write = require('./write.js');
+// const Buffer = require('buffer').Buffer;
+
+module.exports = exports = {};
+
+exports.bmp = {};
+
+exports.readBit = function(filepath, newFile){
+  fs.readFile(`${__dirname}/../../assets/${filepath}`, function(err, data){
+    if (err) throw err;
+    // transform(parameters) do we do this and move write to the end of the transforms???
+    write(newFile, data);
+  });
+};
+
 
 
 // Example
