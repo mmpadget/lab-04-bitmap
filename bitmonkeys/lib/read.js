@@ -1,3 +1,31 @@
+'use strict';
+
+const fs = require('fs');
+const write = require('./write.js');
+// let newData = [];
+// module.exports.newData = newData;]
+
+module.exports = exports = {};
+let newData = [];
+exports.newData = newData;
+
+function readStuff() {
+  fs.readFile(`${__dirname}/text-example.txt`, function(err, data) {
+    console.log('Read file');
+    if(err) throw err;
+    // console.log(data.toString());
+    // newData = data.toString();
+    newData.push(data.toString());
+    newData += '\n\nMore new text...';
+    // console.log('This is new read data: ', newData);
+    // Replaces existing newData text in text.txt.
+    write.writeStuff();
+  });
+}
+readStuff();
+
+// This text represents a bit map image.
+
 
 
 // Example
@@ -6,23 +34,6 @@
 //   fs.stat('/tmp/world', (err, stats) => {
 //     if (err) throw err;
 //     console.log(`stats: ${JSON.stringify(stats)}`);
-//   });
-// });
-
-
-
-// fs.readFile(`${__dirname}/../data/one.txt`, function(err, data) {
-//   console.log('Read file');
-//   if(err) throw err;
-//   console.log(data.toString());
-//   let newData = data.toString();
-//   newData += '\n\nMore new text...';
-//   // Replaces existing newData text in text.txt.
-//
-//   fs.writeFile(`${__dirname}/../data/text.txt`, newData, function(err) {
-//     // Creates text file if it doesn't exist or uses existing file.
-//     console.log('Wrote to file');
-//     if(err) throw err;
 //   });
 // });
 
