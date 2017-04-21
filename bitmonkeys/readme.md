@@ -3,7 +3,7 @@ Code Fellows: Code 401: Class: 301d15
 
 Week 1 Project: April 20, 2017
 
-- [Foundations of Software Development](https://www.codefellows.org/courses/code-301/intermediate-software-development/)
+- [Advanced Software Development in Full-Stack JavaScript](https://www.codefellows.org/courses/code-401/advanced-software-development-in-full-stack-javascript/)
 
 ## Description
 For this assignment we built a Bitmap reader and transformer. It reads a Bitmap in from disk, run one or more color transforms on the bitmap and then writes it out to a new file. This project uses node buffers in order to manipulate binary data. The project includes tests.
