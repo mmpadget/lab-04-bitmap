@@ -1,0 +1,31 @@
+{
+  "name": "bitmonkeys",
+  "version": "1.0.0",
+  "description": "Lab 4 Group Project",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmpadget/lab-04-bitmap.git"
+  },
+  "keywords": [
+    "bitmap",
+    "group",
+    "project"
+  ],
+  "author": "David, Christopher, Steven, Michael",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mmpadget/lab-04-bitmap/issues"
+  },
+  "homepage": "https://github.com/mmpadget/lab-04-bitmap#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0"
+  }
+}
