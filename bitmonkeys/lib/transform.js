@@ -17,15 +17,27 @@ bmp.wholeFile = bitmap;
 
 console.log('Buffer array before ', bmp.colorArray);
 
-for (var i = 0; i < bmp.colorArray.length; i += 4) {
-  //console.log('In loop before ', bmp.colorArray[i]);
-  bmp.colorArray[i] = 255 - bmp.colorArray[i];
-  //console.log('In loop after ', bmp.colorArray[i]);
-}
-console.log('Buffer array after ', bmp.colorArray);
+// for (var i = 0; i < bmp.colorArray.length; i += 4) {
+//   // console.log('In loop before ', bmp.colorArray[i]);
+//   bmp.colorArray[i] = 255 - bmp.colorArray[i];
+//   bmp.colorArray[i + 1] = 255 - bmp.colorArray[i + 1];
+//   bmp.colorArray[i + 2] = 255 - bmp.colorArray[i + 2];
+//   //console.log('In loop after ', bmp.colorArray[i]);
+//
+//   // console.log();
+// }
+// console.log('Buffer array after ', bmp.colorArray);
 
 //console.log('Array ', bmp.colorArray);
-
+for (let i = 0; i < bmp.colorArray.length; i += 4) {
+  console.log(bmp.colorArray[i], bmp.colorArray[i + 1], bmp.colorArray[i + 2], 'b4');
+  let avgVal = ((bmp.colorArray[i] + bmp.colorArray[i + 1] + bmp.colorArray[i + 2]) / 3);
+  bmp.colorArray[i] = bmp.colorArray[i + 1] = bmp.colorArray[i + 2] = avgVal;
+  console.log(bmp.colorArray[i], bmp.colorArray[i + 1], bmp.colorArray[i + 2], 'after');
+  // bmp.colorArray[i + 1] = avgVal;
+  // bmp.colorArray[i + 2] = avgVal;
+}
+console.log('Buffer array after ', bmp.colorArray);
 
 function resultOfTransform(newFile, newData) {
   fs.writeFile(`${__dirname}/../data/${newFile}`, newData, function(err){
@@ -95,4 +107,3 @@ colorArray	54	70??	slice(54, bmp.offset)
 // exports.scaleColor = function(newFile, readData) {
 //
 // }
-
