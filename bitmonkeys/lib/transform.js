@@ -1,6 +1,7 @@
 'use strict';
 
 const fs = require('fs');
+
 const bitmap = fs.readFileSync(`${__dirname}/../../assets/bitmap.bmp`);
 const bmp = {};
 
@@ -68,3 +69,30 @@ colorArray	54	70??	slice(54, bmp.offset)
 // Invert each (transform). 255-225 is the inverted value.
 // sum of 3 values, avg of those values (greyscale) 255, 0
 // console.log(colorArray);
+
+//steven-teddy work
+// const Buffer = require('buffer').Buffer;
+// const write = require('./write.js');
+
+// module.exports = exports = {};
+
+// exports.grayscale = function (newFile, readData) {
+//   let offset = readData.readUInt32LE(10);
+//   let colorArr = readData.slice(54, offset);
+//   for (let i = 0; i < colorArr.length; i+=4){
+//     let avgVal = ((colorArr[i] + colorArr[i + 1] + colorArr[i + 2]) / 3);
+//     readData.writeUInt32LE(colorArr[i], avgVal);
+//     readData.writeUInt32LE(colorArr[i + 1], avgVal);
+//     readData.writeUInt32LE(colorArr[i + 2], avgVal);
+//   }
+//   write(newFile, readData);
+// };
+
+// exports.invert = function(newFile, readData) {
+//
+// }
+//
+// exports.scaleColor = function(newFile, readData) {
+//
+// }
+
