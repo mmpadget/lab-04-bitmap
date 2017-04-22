@@ -1,7 +1,7 @@
 'use strict';
 
 const fs = require('fs');
-const bitmap = fs.readFileSync(`${__dirname}/data/bitmap.bmp`);
+const bitmap = fs.readFileSync(`${__dirname}/../../assets/bitmap.bmp`);
 const bmp = {};
 
 bmp.spec = bitmap.toString('utf-8', 0, 2);
@@ -11,12 +11,27 @@ bmp.height = bitmap.readUInt32LE(22);
 bmp.offset = bitmap.readUInt32LE(10);
 bmp.color = bitmap.slice(54, bmp.offset);
 bmp.colorArray = bitmap.slice(54, bmp.offset);
+// Need pixel data
+bmp.wholeFile = bitmap;
 
-console.log(bmp);
-console.log(bmp.colorArray);
-//console.dir(bmp.colorArray.toString('utf-8'));
-// console.log(bmp.colorArray.toString('hex'));
-bmp.Bitmask = bitmap.readUInt32LE(10);
+console.log('Buffer array before ', bmp.colorArray);
+
+for (var i = 0; i < bmp.colorArray.length; i += 4) {
+  //console.log('In loop before ', bmp.colorArray[i]);
+  bmp.colorArray[i] = 255 - bmp.colorArray[i];
+  //console.log('In loop after ', bmp.colorArray[i]);
+}
+console.log('Buffer array after ', bmp.colorArray);
+
+//console.log('Array ', bmp.colorArray);
+
+
+function resultOfTransform(newFile, newData) {
+  fs.writeFile(`${__dirname}/../data/${newFile}`, newData, function(err){
+    if (err) throw err;
+  });
+}
+resultOfTransform('newtest.bmp', bmp.wholeFile);
 
 // // 3. The readfile.js runs.
 // const readMainFile = require('./lib/readfile.js');
