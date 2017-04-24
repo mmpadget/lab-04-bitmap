@@ -9,12 +9,12 @@ module.exports = exports = {};
 
 exports.bmp = {};
 
-exports.readBit = function(filepath, newFile){
+exports.readBit = function(filepath, newFile, callback){
   fs.readFile(`${__dirname}/../../assets/${filepath}`, function(err, data){
     if (err) throw err;
     // transform(parameters) do we do this and move write to the end of the transforms???
     // write(newFile, data);
-    xform.grayscale(newFile, data);
+    callback(newFile, data);
   });
 };
 
