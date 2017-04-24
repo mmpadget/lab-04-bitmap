@@ -10,5 +10,5 @@ const xform = require('./lib/transform.js');
 // read( xform( write()))
 // }
 read.readBit('bitmap.bmp', 'newBMPgray.bmp', xform.grayscale);
-read.readBit('bitmap.bmp', 'newBMPinvert.bmp', xform.invert);
-read.readBit('bitmap.bmp', 'newBMPscale.bmp', xform.scaleRed);
+// read.readBit('bitmap.bmp', 'newBMPinvert.bmp', xform.invert);
+// read.readBit('bitmap.bmp', 'newBMPscale.bmp', xform.scaleColor);

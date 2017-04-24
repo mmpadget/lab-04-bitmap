@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 // const write = require('./write.js');
-const xform = require('./transform.js');
+// const xform = require('./transform.js');
 // const Buffer = require('buffer').Buffer;
 
 module.exports = exports = {};
