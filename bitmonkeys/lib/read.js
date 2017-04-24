@@ -3,20 +3,19 @@
 const fs = require('fs');
 // const write = require('./write.js');
 const xform = require('./transform.js');
+const Bitmap = require('../model/constructor.js');
 // const Buffer = require('buffer').Buffer;
 
 module.exports = exports = {};
 
-exports.bmp = {};
-
 exports.readBit = function(filepath, newFile, callback){
   fs.readFile(`${__dirname}/../../assets/${filepath}`, function(err, data){
     if (err) throw err;
-    // transform(parameters) do we do this and move write to the end of the transforms???
-    // write(newFile, data);
-    callback(newFile, data);
+    let bitmap = new Bitmap(data);
+    callback(newFile, bitmap);
   });
 };
+
 
 
 

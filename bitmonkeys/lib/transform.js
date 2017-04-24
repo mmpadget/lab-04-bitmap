@@ -2,66 +2,54 @@
 
 const write = require('./write.js');
 
-// 2. convert buffer headers data into a Javascript Object (using constructors)
-
 module.exports = exports = {};
 
-exports.grayscale = function (newFile, readData) {
-  let offset = readData.readUInt32LE(10);
-  let colorArr = readData.slice(54, offset);
-  for (let i = 0; i < colorArr.length; i+=4){
-    let avgVal = ((colorArr[i] + colorArr[i + 1] + colorArr[i + 2]) / 3);
-    colorArr[i] = colorArr[i + 1] = colorArr[i + 2] = avgVal;
+exports.grayscale = function (newFile, bitmap) {
+  for (let i = 0; i < bitmap.colorArr.length; i+=4){
+    let avgVal = ((bitmap.colorArr[i] + bitmap.colorArr[i + 1] + bitmap.colorArr[i + 2]) / 3);
+    bitmap.colorArr[i] = bitmap.colorArr[i + 1] = bitmap.colorArr[i + 2] = avgVal;
   }
-  write(newFile, readData);
+  write(newFile, bitmap.buffer);
 };
 
-exports.invert = function(newFile, readData) {
-  let offset = readData.readUInt32LE(10);
-  let colorArr = readData.slice(54, offset);
-  for (let i = 0; i < colorArr.length; i+=4){
-    colorArr[i] = 255 - colorArr[i];
-    colorArr[i + 1] = 255 - colorArr[i + 1];
-    colorArr[i + 2] = 255 - colorArr[i + 2];
+exports.invert = function(newFile, bitmap) {
+  for (let i = 0; i < bitmap.colorArr.length; i+=4){
+    bitmap.colorArr[i] = 255 - bitmap.colorArr[i];
+    bitmap.colorArr[i + 1] = 255 - bitmap.colorArr[i + 1];
+    bitmap.colorArr[i + 2] = 255 - bitmap.colorArr[i + 2];
   }
-  write(newFile, readData);
+  write(newFile, bitmap.buffer);
 };
 
-exports.scaleGreen = function(newFile, readData) {
-  let offset = readData.readUInt32LE(10);
-  let colorArr = readData.slice(54, offset);
-  for (let i = 0; i < colorArr.length; i+=4){
-    if (colorArr[i + 1] * 3 >= 255) {
-      colorArr[i + 1] = 255;
+exports.scaleGreen = function(newFile, bitmap) {
+  for (let i = 0; i < bitmap.colorArr.length; i+=4){
+    if (bitmap.colorArr[i + 1] * 3 >= 255) {
+      bitmap.colorArr[i + 1] = 255;
     } else {
-      colorArr[i + 1] = colorArr[i +1] * 3;
+      bitmap.colorArr[i + 1] = bitmap.colorArr[i +1] * 3;
     }
   }
-  write(newFile, readData);
+  write(newFile, bitmap.buffer);
 };
 
-exports.scaleRed = function(newFile, readData) {
-  let offset = readData.readUInt32LE(10);
-  let colorArr = readData.slice(54, offset);
-  for (let i = 0; i < colorArr.length; i+=4){
-    if (colorArr[i + 2] * 3 >= 255) {
-      colorArr[i + 2] = 255;
+exports.scaleRed = function(newFile, bitmap) {
+  for (let i = 0; i < bitmap.colorArr.length; i+=4){
+    if (bitmap.colorArr[i + 2] * 3 >= 255) {
+      bitmap.colorArr[i + 2] = 255;
     } else {
-      colorArr[i + 2] = colorArr[i + 2] * 3;
+      bitmap.colorArr[i + 2] = bitmap.colorArr[i + 2] * 3;
     }
   }
-  write(newFile, readData);
+  write(newFile, bitmap.buffer);
 };
 
-exports.scaleBlue = function(newFile, readData) {
-  let offset = readData.readUInt32LE(10);
-  let colorArr = readData.slice(54, offset);
-  for (let i = 0; i < colorArr.length; i+=4){
-    if (colorArr[i] * 3 >= 255) {
-      colorArr[i] = 255;
+exports.scaleBlue = function(newFile, bitmap) {
+  for (let i = 0; i < bitmap.colorArr.length; i+=4){
+    if (bitmap.colorArr[i] * 3 >= 255) {
+      bitmap.colorArr[i] = 255;
     } else {
-      colorArr[i] = colorArr[i] * 3;
+      bitmap.colorArr[i] = bitmap.colorArr[i] * 3;
     }
   }
-  write(newFile, readData);
+  write(newFile, bitmap.buffer);
 };
