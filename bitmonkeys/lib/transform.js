@@ -1,50 +1,86 @@
 'use strict';
 
-const fs = require('fs');
+const write = require('./write.js');
 
-const bitmap = fs.readFileSync(`${__dirname}/../../assets/bitmap.bmp`);
-const bmp = {};
+module.exports = exports = {};
 
-bmp.spec = bitmap.toString('utf-8', 0, 2);
-bmp.size = bitmap.readUInt32LE(2);
-bmp.width = bitmap.readUInt32LE(18);
-bmp.height = bitmap.readUInt32LE(22);
-bmp.offset = bitmap.readUInt32LE(10);
-bmp.color = bitmap.slice(54, bmp.offset);
-bmp.colorArray = bitmap.slice(54, bmp.offset);
-// Need pixel data
-bmp.wholeFile = bitmap;
+exports.grayscale = function (newFile, readData) {
+  let offset = readData.readUInt32LE(10);
+  let colorArr = readData.slice(54, offset);
+  for (let i = 0; i < colorArr.length; i+=4){
+    let avgVal = ((colorArr[i] + colorArr[i + 1] + colorArr[i + 2]) / 3);
+    colorArr[i] = colorArr[i + 1] = colorArr[i + 2] = avgVal;
+  }
+  write(newFile, readData);
+};
 
-console.log('Buffer array before ', bmp.colorArray);
+exports.invert = function(newFile, readData) {
+  let offset = readData.readUInt32LE(10);
+  let colorArr = readData.slice(54, offset);
+  for (let i = 0; i < colorArr.length; i+=4){
+    colorArr[i] = 255 - colorArr[i];
+    colorArr[i + 1] = 255 - colorArr[i + 1];
+    colorArr[i + 2] = 255 - colorArr[i + 2];
+  }
+  write(newFile, readData);
+};
 
-// for (var i = 0; i < bmp.colorArray.length; i += 4) {
-//   // console.log('In loop before ', bmp.colorArray[i]);
+exports.scaleColor = function(newFile, readData) {
+  let offset = readData.readUInt32LE(10);
+  let colorArr = readData.slice(54, offset);
+  for (let i = 0; i < colorArr.length; i+=4){
+    if (colorArr[i + 1] * 3 >= 255) {
+      colorArr[i + 1] = 255;
+    } else {
+      colorArr[i + 1] = colorArr[i +1] * 3;
+    }
+  }
+  write(newFile, readData);
+};
+//
+// const bitmap = fs.readFileSync(`${__dirname}/../../assets/bitmap.bmp`);
+// const bmp = {};
+//
+// bmp.spec = bitmap.toString('utf-8', 0, 2);
+// bmp.size = bitmap.readUInt32LE(2);
+// bmp.width = bitmap.readUInt32LE(18);
+// bmp.height = bitmap.readUInt32LE(22);
+// bmp.offset = bitmap.readUInt32LE(10);
+// bmp.color = bitmap.slice(54, bmp.offset);
+// bmp.colorArray = bitmap.slice(54, bmp.offset);
+// // Need pixel data
+// bmp.wholeFile = bitmap;
+//
+// console.log('Buffer array before ', bmp.colorArray);
+//
+// // for (var i = 0; i < bmp.colorArray.length; i += 4) {
+// //   // console.log('In loop before ', bmp.colorArray[i]);
 //   bmp.colorArray[i] = 255 - bmp.colorArray[i];
 //   bmp.colorArray[i + 1] = 255 - bmp.colorArray[i + 1];
 //   bmp.colorArray[i + 2] = 255 - bmp.colorArray[i + 2];
 //   //console.log('In loop after ', bmp.colorArray[i]);
+// //
+// //   // console.log();
+// // }
+// // console.log('Buffer array after ', bmp.colorArray);
 //
-//   // console.log();
+// //console.log('Array ', bmp.colorArray);
+// for (let i = 0; i < bmp.colorArray.length; i += 4) {
+//   console.log(bmp.colorArray[i], bmp.colorArray[i + 1], bmp.colorArray[i + 2], 'b4');
+//   let avgVal = ((bmp.colorArray[i] + bmp.colorArray[i + 1] + bmp.colorArray[i + 2]) / 3);
+//   bmp.colorArray[i] = bmp.colorArray[i + 1] = bmp.colorArray[i + 2] = avgVal;
+//   console.log(bmp.colorArray[i], bmp.colorArray[i + 1], bmp.colorArray[i + 2], 'after');
+//   // bmp.colorArray[i + 1] = avgVal;
+//   // bmp.colorArray[i + 2] = avgVal;
 // }
 // console.log('Buffer array after ', bmp.colorArray);
-
-//console.log('Array ', bmp.colorArray);
-for (let i = 0; i < bmp.colorArray.length; i += 4) {
-  console.log(bmp.colorArray[i], bmp.colorArray[i + 1], bmp.colorArray[i + 2], 'b4');
-  let avgVal = ((bmp.colorArray[i] + bmp.colorArray[i + 1] + bmp.colorArray[i + 2]) / 3);
-  bmp.colorArray[i] = bmp.colorArray[i + 1] = bmp.colorArray[i + 2] = avgVal;
-  console.log(bmp.colorArray[i], bmp.colorArray[i + 1], bmp.colorArray[i + 2], 'after');
-  // bmp.colorArray[i + 1] = avgVal;
-  // bmp.colorArray[i + 2] = avgVal;
-}
-console.log('Buffer array after ', bmp.colorArray);
-
-function resultOfTransform(newFile, newData) {
-  fs.writeFile(`${__dirname}/../data/${newFile}`, newData, function(err){
-    if (err) throw err;
-  });
-}
-resultOfTransform('newtest.bmp', bmp.wholeFile);
+//
+// function resultOfTransform(newFile, newData) {
+//   fs.writeFile(`${__dirname}/../data/${newFile}`, newData, function(err){
+//     if (err) throw err;
+//   });
+// }
+// resultOfTransform('newtest.bmp', bmp.wholeFile);
 
 // // 3. The readfile.js runs.
 // const readMainFile = require('./lib/readfile.js');
@@ -83,27 +119,3 @@ colorArray	54	70??	slice(54, bmp.offset)
 // console.log(colorArray);
 
 //steven-teddy work
-// const Buffer = require('buffer').Buffer;
-// const write = require('./write.js');
-
-// module.exports = exports = {};
-
-// exports.grayscale = function (newFile, readData) {
-//   let offset = readData.readUInt32LE(10);
-//   let colorArr = readData.slice(54, offset);
-//   for (let i = 0; i < colorArr.length; i+=4){
-//     let avgVal = ((colorArr[i] + colorArr[i + 1] + colorArr[i + 2]) / 3);
-//     readData.writeUInt32LE(colorArr[i], avgVal);
-//     readData.writeUInt32LE(colorArr[i + 1], avgVal);
-//     readData.writeUInt32LE(colorArr[i + 2], avgVal);
-//   }
-//   write(newFile, readData);
-// };
-
-// exports.invert = function(newFile, readData) {
-//
-// }
-//
-// exports.scaleColor = function(newFile, readData) {
-//
-// }
