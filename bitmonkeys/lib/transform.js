@@ -2,6 +2,8 @@
 
 const write = require('./write.js');
 
+// 2. convert buffer headers data into a Javascript Object (using constructors)
+
 module.exports = exports = {};
 
 exports.grayscale = function (newFile, readData) {
@@ -25,7 +27,7 @@ exports.invert = function(newFile, readData) {
   write(newFile, readData);
 };
 
-exports.scaleColor = function(newFile, readData) {
+exports.scaleGreen = function(newFile, readData) {
   let offset = readData.readUInt32LE(10);
   let colorArr = readData.slice(54, offset);
   for (let i = 0; i < colorArr.length; i+=4){
@@ -38,40 +40,28 @@ exports.scaleColor = function(newFile, readData) {
   write(newFile, readData);
 };
 
-// 1. open file using fs and read it into a buffer.
-// 2. convert buffer headers data into a Javascript Object (using constructors)
-// 3. Run a transform on the buffer directly
-// 4. Write the buffer to a new file.
-
-function redChannel() {
-  for (let i = 0; i < bmp.colorArray.length; i += 4) {
-    bmp.colorArray[i + 2] = 255; // Red
+exports.scaleRed = function(newFile, readData) {
+  let offset = readData.readUInt32LE(10);
+  let colorArr = readData.slice(54, offset);
+  for (let i = 0; i < colorArr.length; i+=4){
+    if (colorArr[i + 2] * 3 >= 255) {
+      colorArr[i + 2] = 255;
+    } else {
+      colorArr[i + 2] = colorArr[i + 2] * 3;
+    }
   }
-}
-redChannel();
-// console.log('Buffer after! ', bmp.colorArray);
+  write(newFile, readData);
+};
 
-// console.log('Buffer before ', bmp.colorArray);
-function greenChannel() {
-  // for (let i = 0; i < bmp.colorArray.length; i += 4) {
-  //   if (i <= 255) {
-  //     bmp.colorArray[i + 1] = 255; // Green
-  //   }
-  // }
-}
-greenChannel();
-// console.log('Buffer after! ', bmp.colorArray);
-
-// console.log('Buffer before ', bmp.colorArray);
-function blueChannel() {
-  // for (let i = 0; i < bmp.colorArray.length; i += 4) {
-  //   if (i <= 255) {
-  //     bmp.colorArray[i] = 255; // Blue
-  //   }
-  // }
-}
-blueChannel();
-
-
-
-
+exports.scaleBlue = function(newFile, readData) {
+  let offset = readData.readUInt32LE(10);
+  let colorArr = readData.slice(54, offset);
+  for (let i = 0; i < colorArr.length; i+=4){
+    if (colorArr[i] * 3 >= 255) {
+      colorArr[i] = 255;
+    } else {
+      colorArr[i] = colorArr[i] * 3;
+    }
+  }
+  write(newFile, readData);
+};
